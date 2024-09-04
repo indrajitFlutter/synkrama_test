@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synkrama_test/screens/common_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -15,8 +16,14 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      String tempEmail = prefs.getString("email") ?? "";
+      String password = prefs.getString("password") ?? "";
+      if (tempEmail == _email && password == _password) {
+        await prefs.setBool('isLoggedIn', true);
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        alertMessage(context, "Email can not find");
+      }
     }
   }
 
@@ -53,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) => _email = value!,
+                  onChanged: (value) => _email = value,
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -70,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     }
                     return null;
                   },
-                  onSaved: (value) => _password = value!,
+                  onChanged: (value) => _password = value,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -87,7 +94,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: ElevatedButton(
                     onPressed: _signIn,
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-                    child: const Text('Sign In',style: TextStyle(color: Colors.white),),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -103,9 +113,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height:25,width:25,child: Image.asset("assets/icon/google.png",fit:BoxFit.contain,)),
-                          const SizedBox(width: 5,),
-        
+                          SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: Image.asset(
+                                "assets/icon/google.png",
+                                fit: BoxFit.contain,
+                              )),
+                          const SizedBox(
+                            width: 5,
+                          ),
                           const Text('Google'),
                         ],
                       ),
@@ -117,8 +134,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height:25,width:25,child: Image.asset("assets/icon/facebook.png",fit:BoxFit.contain,)),
-                          const SizedBox(width: 5,),
+                          SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: Image.asset(
+                                "assets/icon/facebook.png",
+                                fit: BoxFit.contain,
+                              )),
+                          const SizedBox(
+                            width: 5,
+                          ),
                           const Text('Facebook'),
                         ],
                       ),

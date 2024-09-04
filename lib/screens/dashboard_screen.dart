@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synkrama_test/screens/common_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -62,8 +63,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
-          ),
+            onPressed: () =>  showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  backgroundColor: Colors.white,
+                  surfaceTintColor: Colors.white,
+                  content: const Text("If Logout User Details Also remove"),
+                  actions: [
+                    TextButton(
+                      child: const Text("Close"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    TextButton(
+                      child: const Text("ok"),
+                      onPressed: () =>_logout(context),
+                    ),
+                  ],
+                );
+              },
+            ),)
         ],
       ),
       body: Column(

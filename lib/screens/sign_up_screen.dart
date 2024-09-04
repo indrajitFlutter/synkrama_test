@@ -26,9 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       await prefs.setString("name",_name);
       await prefs.setString("email",_email);
       await prefs.setString("password",_password);
-      await prefs.setBool('isLoggedIn', true);
-      Navigator.pushReplacementNamed(context, '/dashboard');
-      _formKey.currentState!.save();
+      await prefs.setBool('isLoggedIn', false);
+      Navigator.pushReplacementNamed(context, '/signin');
     }
   }
 
